@@ -3,7 +3,7 @@
 
 #Currently written on ix-dev which uses python 3.7.3
 
-from datetime import datetime, timedelta
+from datetime import datetime,date, timedelta
 
 class Goal:
     '''
@@ -29,7 +29,7 @@ class Goal:
         self.progress += change
 
         #record goal update for graphing
-        self.time_rec.append(datetime.now())
+        self.time_rec.append(date.today())
         self.prog_rec.append(self.progress)
         self.note_rec.append(note)
 
