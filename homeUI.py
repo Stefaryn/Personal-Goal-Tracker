@@ -93,6 +93,7 @@ class HomeUI:
 # -------------------------------------------------------------------------------
 
     def add_goal(self):
+        print("hello")
         newgoal = simpledialog.askstring("Input", "What goal would you like to begin tracking?", parent=self.root)
         self.goal_list.goals.append(goal.Goal(newgoal,0,0))
         self.set_listbox()
