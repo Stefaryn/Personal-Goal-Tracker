@@ -181,4 +181,5 @@ def basic_test():
     print(l2.goals[0].prog_rec)
     print(l2.goals[0].note_rec)
 
-basic_test()
+if __name__ == '__main__':
+    basic_test()
