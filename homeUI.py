@@ -3,6 +3,7 @@
 from tkinter import *
 from tkinter import simpledialog
 import goal
+import os.path
 
 
 class HomeUI:
@@ -13,7 +14,9 @@ class HomeUI:
         self.secondw = 0
         
         # initialize goal list
-        self.goal_list = goal.GoalList("savefile")
+        self.goal_list = goal.GoalList("savefile.csv")
+        if os.path.exists("files/savefile.csv"):
+            self.goal_list.load()
 
         # main window
         self.root = Tk()
@@ -86,6 +89,8 @@ class HomeUI:
         self.goalprogheader = Label(self.dframe, textvariable=self.text3).grid(row=3, column=0)
         self.goalprog = Label(self.dframe, textvariable=self.text4).grid(row=4, column=0)
         
+        self.set_listbox()
+        
         # main window loop initiation
         self.root.mainloop()
         
@@ -93,9 +98,14 @@ class HomeUI:
 
     def add_goal(self):
         newgoal = simpledialog.askstring("Input", "What goal would you like to begin tracking?", parent=self.root)
-        self.goal_list.goals.append(goal.Goal(newgoal,0,0))
-        self.set_listbox()
-        print(self.goal_list)
+        if newgoal:
+            goalamt = simpledialog.askinteger("Input", "What is your end goal amount?", parent=self.root, minvalue=1, maxvalue=1000000)
+            if goalamt is None:
+                goalamt = 1
+            self.goal_list.goals.append(goal.Goal(newgoal,goalamt,0))
+            self.goal_list.save()
+            self.set_listbox()
+            print(self.goal_list)
         
     def set_listbox(self):
         self.lbox.delete(0, END)
@@ -109,7 +119,7 @@ class HomeUI:
             self.text1.set("Goal:")
             self.text2.set("%s" % (self.goal_list.goals[i].name))
             self.text3.set("Progress:")
-            self.text4.set("%d" % (self.goal_list.goals[i].progress))
+            self.text4.set("%d/%d" % (self.goal_list.goals[i].progress, self.goal_list.goals[i].finish))
             
     def edit_goal(self):
         selection = self.lbox.curselection()

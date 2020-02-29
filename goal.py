@@ -109,7 +109,7 @@ class GoalList:
             if(len(f) >= 3):
                 #initialize goal
                 goal = Goal(f[0], int(f[1]), int(f[2]))
-                goal.load(goal.name + ".txt")
+                #goal.load(goal.name + ".txt")
                     # ^this currently is broken because I changed what is being saved
                     #  when fixed should maybe be called later than it is 
                 
