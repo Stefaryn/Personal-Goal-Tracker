@@ -4,6 +4,8 @@
 #Currently written on ix-dev which uses python 3.7.3
 
 from datetime import datetime,date, timedelta
+import os
+import csv
 
 class Goal:
     '''
@@ -34,59 +36,100 @@ class Goal:
         self.note_rec.append(note)
 
     # Note that load and save currently use everything from a <files> directory
-    def load(self, filename: str):
-        '''
-        TODO: Currently load crashed if the file is incorrect,
-        we should decide on a file format and verify file input
+#    def load(self, filename: str):
+#        '''
+#        TODO: Currently load crashed if the file is incorrect,
+#        we should decide on a file format and verify file input
+#
+#        Most of the error checking should probably happen on the
+#        user input side eventually and our files can just be reliable
+#
+#        TODO: maybe change format of file because currently notes that
+#        contain "," will not be read back in properly
+#        '''
+#        filename = "files/" + filename
+#        infile = open(filename, "r")
+#
+#        #read in time_rec
+#        line = infile.readline().strip(",\n")
+#        breakline = line.split(",")
+#        for t in breakline:
+#            self.time_rec.append(datetime.strptime(t, "%a %b %d %H:%M:%S %Y"))
+#
+#        #read in prog_rec
+#        line = infile.readline().strip(",\n")
+#        breakline = line.split(",")
+#        for p in breakline:
+#            self.prog_rec.append(int(p))
+#
+#        #read in note_rec
+#        line = infile.readline().strip(",\n")
+#        breakline = line.split(",")
+#        for n in breakline:
+#            self.note_rec.append(n)
+#
+#
+#        infile.close()
 
-        Most of the error checking should probably happen on the
-        user input side eventually and our files can just be reliable
+    def load(self,filename: str):
+        
+        
+        filename = self.name.replace(" ","_")
+        
+        filename = "files/" + filename + ".csv"
+        if os.path.exists(filename):
+            with open(filename,"r") as csvfile:
+                #skips first row
+                csv_reader = csv.reader(csvfile, delimiter=",")
+                next(csvfile)
+                for row in csv_reader:
+                    self.prog_rec.append(row[0])
+                    self.time_rec.append(row[1])
+                    self.note_rec.append(row[2])
+                    
+            csvfile.close()
+            self.progress = len(self.time_rec)
 
-        TODO: maybe change format of file because currently notes that
-        contain "," will not be read back in properly
-        '''
-        filename = "files/" + filename
-        infile = open(filename, "r")
+        else:
+            print("DEBUG: {} file not found".format(filename))
+#    def save(self, filename: str):
+#        # Note that this currently overwrites the file, so we should be careful with usage
+#        filename = "files/" + filename
+#        outfile = open(filename, "w")
+#
+#        for rec in self.time_rec:
+#            outfile.write(rec.ctime() + ",")
+#        outfile.write("\n")
+#
+#        for rec in self.prog_rec:
+#            outfile.write(str(rec) + ",")
+#        outfile.write("\n")
+#
+#        for rec in self.note_rec:
+#            outfile.write(rec + ",")
+#        outfile.write("\n")
+#
+#        outfile.close()
 
-        #read in time_rec
-        line = infile.readline().strip(",\n")
-        breakline = line.split(",")
-        for t in breakline:
-            self.time_rec.append(datetime.strptime(t, "%a %b %d %H:%M:%S %Y"))
-
-        #read in prog_rec
-        line = infile.readline().strip(",\n")
-        breakline = line.split(",")
-        for p in breakline:
-            self.prog_rec.append(int(p))
-
-        #read in note_rec
-        line = infile.readline().strip(",\n")
-        breakline = line.split(",")
-        for n in breakline:
-            self.note_rec.append(n)
-
-
-        infile.close()
 
     def save(self, filename: str):
-        # Note that this currently overwrites the file, so we should be careful with usage
-        filename = "files/" + filename
-        outfile = open(filename, "w")
+        # in this version im assuming we could pass the goal name through home ui
+        # and we could create a .csv file using that name, same goes to loading it
 
-        for rec in self.time_rec:
-            outfile.write(rec.ctime() + ",")
-        outfile.write("\n")
+        filename = self.name.replace(" ","_")
 
-        for rec in self.prog_rec:
-            outfile.write(str(rec) + ",")
-        outfile.write("\n")
+        filename = "files/" + filename + ".csv"
 
-        for rec in self.note_rec:
-            outfile.write(rec + ",")
-        outfile.write("\n")
+        with open(filename,'w') as csvfile:
+            filewriter = csv.writer(csvfile, lineterminator='\n')
+            #column names
+            filewriter.writerow(["Progress","Date","Note"])
+            for p in range(self.progress):
+                filewriter.writerow([self.prog_rec[p],self.time_rec[p],self.note_rec[p]])
+        csvfile.close()
         
-        outfile.close()
+
+
 
 class GoalList:
     '''
