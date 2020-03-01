@@ -1,7 +1,7 @@
  
 import matplotlib.pyplot as plt
 import matplotlib.dates as plt_dates
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import time
 
 
@@ -30,7 +30,7 @@ def build_graph(goalObj):
 
 	#initial display of graph's limits
 	ax.set_ylim(-0.2, goalObj.finish+1)
-	ax.set_xlim(timestamps[0] - timedelta(days=1), timestamps[-1] + timedelta(days=1))
+	ax.set_xlim(timestamps[0] - timedelta(days=1), date.today())
 	
 	#gcf stands for 'get current figure' to show dates slanted
 	plt.gcf().autofmt_xdate()
@@ -46,6 +46,8 @@ def build_graph(goalObj):
 	txt = ax.text(timestamps[0], goalObj.finish-1, '', va="center",fontsize=16,
 			bbox=dict(boxstyle='round', color='lightskyblue')
 			)
+
+
 	#displays the message of the plot
 	def txt_format(txt_str):
 		#every 4th space is \n
@@ -79,23 +81,26 @@ def build_graph(goalObj):
 		fig.canvas.draw()
 		fig.canvas.flush_events()
 
+	#if (goalObj.progress > 1):
+	for i in range(1, len(milestones) ):
+		data_x.append(timestamps[i])
+		data_y.append( milestones[i])
+                
+		line.set_xdata(data_x)
+		line.set_ydata(data_y)
+		
+		fig.canvas.draw()
+		fig.canvas.flush_events()
+			
+		print(data_x, data_y)
+		time.sleep(.25)
+
 	cid = fig.canvas.mpl_connect('pick_event', on_pick)
 	fig.canvas.mpl_connect('figure_leave_event', on_leave)
 
 	plt.show(False)
+    
 
-	for i in range(1, len(milestones) ):
-		data_x.append(timestamps[i])
-		data_y.append( milestones[i])
-    
-		line.set_xdata(data_x)
-		line.set_ydata(data_y)
-    
-		fig.canvas.draw()
-		fig.canvas.flush_events()
-    
-		print(data_x, data_y)
-		time.sleep(.25)
 
 
 	plt.show()
