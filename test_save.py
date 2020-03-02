@@ -3,7 +3,7 @@ import goal
 
 
 
-
+    
 def init_goal():
 	goalOne = goal.Goal("Horse Riding1", 9)
 	goalOne.progress = 1
@@ -62,13 +62,13 @@ def main():
 
 #uncomment to test save
 
-#    init_goal()
+    init_goal()
 #    prog_one()
 #    prog_two()
 
-    test_load_one()
-    test_load_two()
-    test_load_three()
+#    test_load_one()
+#    test_load_two()
+#    test_load_three()
 
 
 

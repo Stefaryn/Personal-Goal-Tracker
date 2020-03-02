@@ -7,6 +7,17 @@ from datetime import datetime,date, timedelta
 import os
 import csv
 
+class Node:
+    '''
+
+    '''
+    def __init__(self, progress: int, time: date, note: str):
+        self.progress = progress
+        self.time = time
+        self.note = note
+
+
+
 class Goal:
     '''
 
@@ -20,9 +31,13 @@ class Goal:
 
         #initialize lists for update tracking,
         # TODO: no system of saving and loading back in
+        '''
         self.time_rec = []
         self.prog_rec = []
         self.note_rec = []
+        '''
+        self.rec = []
+
 
     def __repr__(self) -> str:
         return f"Goal: {self.name}, Finish: {self.finish}, Progress: {self.progress}"
@@ -31,9 +46,12 @@ class Goal:
         self.progress += change
 
         #record goal update for graphing
+        """
         self.time_rec.append(date.today())
         self.prog_rec.append(self.progress)
         self.note_rec.append(note)
+        """
+        self.rec.append( Node(self.progress, date.today(), note) )
 
     # Note that load and save currently use everything from a <files> directory
 #    def load(self, filename: str):
@@ -83,12 +101,16 @@ class Goal:
                 csv_reader = csv.reader(csvfile, delimiter=",")
                 next(csvfile)
                 for row in csv_reader:
+                    self.rec.append(Node(row[0], date.fromordinal(int(row[1])), row[2]))
+
+                    '''
                     self.prog_rec.append(row[0])
                     self.time_rec.append(row[1])
                     self.note_rec.append(row[2])
+                    '''
                     
             csvfile.close()
-            self.progress = len(self.time_rec)
+            #self.progress = len(self.time_rec)
 
         else:
             print("DEBUG: {} file not found".format(filename))
@@ -124,8 +146,12 @@ class Goal:
             filewriter = csv.writer(csvfile, lineterminator='\n')
             #column names
             filewriter.writerow(["Progress","Date","Note"])
+            '''
             for p in range(self.progress):
                 filewriter.writerow([self.prog_rec[p],self.time_rec[p],self.note_rec[p]])
+            '''
+            for p in self.rec:
+                filewriter.writerow([p.progress, p.time.toordinal(), p.note])
         csvfile.close()
         
 
@@ -216,6 +242,7 @@ def basic_test():
     l1.save()
     '''
     #GoalList load tests
+    '''
     l2 = GoalList("list.txt")
     l2.load()
     print(l2)
@@ -223,6 +250,7 @@ def basic_test():
     print(l2.goals[0].time_rec)
     print(l2.goals[0].prog_rec)
     print(l2.goals[0].note_rec)
+    '''
 
 if __name__ == '__main__':
     basic_test()
