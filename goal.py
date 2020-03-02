@@ -53,48 +53,16 @@ class Goal:
         """
         self.rec.append( Node(self.progress, date.today(), note) )
 
-    # Note that load and save currently use everything from a <files> directory
-#    def load(self, filename: str):
-#        '''
-#        TODO: Currently load crashed if the file is incorrect,
-#        we should decide on a file format and verify file input
-#
-#        Most of the error checking should probably happen on the
-#        user input side eventually and our files can just be reliable
-#
-#        TODO: maybe change format of file because currently notes that
-#        contain "," will not be read back in properly
-#        '''
-#        filename = "files/" + filename
-#        infile = open(filename, "r")
-#
-#        #read in time_rec
-#        line = infile.readline().strip(",\n")
-#        breakline = line.split(",")
-#        for t in breakline:
-#            self.time_rec.append(datetime.strptime(t, "%a %b %d %H:%M:%S %Y"))
-#
-#        #read in prog_rec
-#        line = infile.readline().strip(",\n")
-#        breakline = line.split(",")
-#        for p in breakline:
-#            self.prog_rec.append(int(p))
-#
-#        #read in note_rec
-#        line = infile.readline().strip(",\n")
-#        breakline = line.split(",")
-#        for n in breakline:
-#            self.note_rec.append(n)
-#
-#
-#        infile.close()
-
-    def load(self,filename: str):
-        
-        
+    def getFilename(self):
         filename = self.name.replace(" ","_")
-        
         filename = "files/" + filename + ".csv"
+        return filename
+
+    def load(self,filename: str = 0):
+
+        if(not filename):
+            filename = self.getFilename()
+        
         if os.path.exists(filename):
             with open(filename,"r") as csvfile:
                 #skips first row
@@ -114,33 +82,14 @@ class Goal:
 
         else:
             print("DEBUG: {} file not found".format(filename))
-#    def save(self, filename: str):
-#        # Note that this currently overwrites the file, so we should be careful with usage
-#        filename = "files/" + filename
-#        outfile = open(filename, "w")
-#
-#        for rec in self.time_rec:
-#            outfile.write(rec.ctime() + ",")
-#        outfile.write("\n")
-#
-#        for rec in self.prog_rec:
-#            outfile.write(str(rec) + ",")
-#        outfile.write("\n")
-#
-#        for rec in self.note_rec:
-#            outfile.write(rec + ",")
-#        outfile.write("\n")
-#
-#        outfile.close()
 
 
-    def save(self, filename: str):
+    def save(self, filename: str = 0):
         # in this version im assuming we could pass the goal name through home ui
         # and we could create a .csv file using that name, same goes to loading it
 
-        filename = self.name.replace(" ","_")
-
-        filename = "files/" + filename + ".csv"
+        if(not filename):
+            filename = self.getFilename()
 
         with open(filename,'w') as csvfile:
             filewriter = csv.writer(csvfile, lineterminator='\n')
