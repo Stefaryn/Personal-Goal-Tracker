@@ -13,6 +13,9 @@ class HomeUI:
         # bool to check for second window
         self.secondw = 0
         
+        # pointer to location in list
+        self.lpointer = 0
+        
         # initialize goal list
         self.goal_list = goal.GoalList("savefile.csv")
         if os.path.exists("files/savefile.csv"):
@@ -114,25 +117,43 @@ class HomeUI:
             
     def showdetails(self, event):
         selection = self.lbox.curselection()
-        if selection:
-            i = int(selection[0])
-            self.text1.set("Goal:")
-            self.text2.set("%s" % (self.goal_list.goals[i].name))
-            self.text3.set("Progress:")
-            self.text4.set("%d/%d" % (self.goal_list.goals[i].progress, self.goal_list.goals[i].finish))
+        if self.secondw == 0:
+            if selection:
+                self.lpointer = int(selection[0])
+                self.text1.set("Goal:")
+                self.text2.set("%s" % (self.goal_list.goals[self.lpointer].name))
+                self.text3.set("Progress:")
+                self.text4.set("%d/%d" % (self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
             
     def edit_goal(self):
         selection = self.lbox.curselection()
         if self.secondw == 0:
             if selection:
                 self.secondw = 1
-                i = int(selection[0])
+                self.lpointer = int(selection[0])
                 editwindow = Toplevel(self.root)
                 editwindow.bind("<Destroy>", self.close_second_win)
                 gname = StringVar()
-                gname.set("working on %s" % (self.goal_list.goals[i].name))
+                gname.set("working on %s" % (self.goal_list.goals[self.lpointer].name))
                 swheader = Label(editwindow, textvariable=gname)
-                swheader.pack()
+                swheader.grid(row=0, column=0)
+                pf = StringVar()
+                pf.set("Progress:\n%d/%d" % (self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
+                pheader = Label(editwindow, textvariable=pf)
+                pheader.grid(row=1, column=0)
+                
+                # create list box
+                lboxf = Frame(editwindow)
+                lboxf.grid(row=2, column=0)
+                scbar = Scrollbar(lboxf, orient=VERTICAL)
+                libox = Listbox(lboxf, yscrollcommand=scbar.set, height=10)
+                scbar.config(command=libox.yview)
+                scbar.pack(side=RIGHT, fill=Y)
+                libox.pack(side=LEFT, fill=BOTH, expand=1)
+                
+                # create add progress button
+                pbutton = Button(editwindow, text="Add Progress Point", command=self.add_progress)
+                pbutton.grid(row=1, column=1)
             else:
                 print("No goal selected")
         else:
@@ -140,6 +161,12 @@ class HomeUI:
 
     def close_second_win(self, event):
         self.secondw = 0
+        
+    def add_progress(self):
+        new_prog = simpledialog.askinteger("Input", "How much progress have you made?", parent=self.root, minvalue=1, maxvalue=(self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress))
+        new_note = simpledialog.askstring("Input", "Any thoughts on this progress?", parent=self.root)
+        self.goal_list.goals[self.lpointer].update(new_prog, new_note)
+        print(self.goal_list.goals[self.lpointer])
            
 
 
