@@ -134,7 +134,14 @@ class GoalList:
     def is_new_goal(self, name:str):
         # checks to see if goal with same name as another goal already exists.
         # returns false if a goal with name name is already in the list
-        pass
+
+        for g in self.goals:
+            if (g.name == name):
+                return False
+
+        # no goal had name name.
+        return True
+        
     
     def add_goal(self, g:Goal):
         #adds a goal to the list
