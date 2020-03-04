@@ -164,7 +164,7 @@ class HomeUI:
                 print(self.goal_list.goals[self.lpointer])
                 self.text1.set("Working on %s\nProgress:\n%d/%d" %(self.goal_list.goals[self.lpointer].name, self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
                 self.set_note_listbox()
-                self.goal_list.goals[self.lpointer].save() # updates save data
+                self.goal_list.save() # updates save data
             
     def set_note_listbox(self):
         '''
