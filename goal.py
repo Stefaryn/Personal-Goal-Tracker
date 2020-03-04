@@ -127,9 +127,7 @@ class GoalList:
             if(len(f) >= 3):
                 #initialize goal
                 goal = Goal(f[0], int(f[1]), int(f[2]))
-                #goal.load(goal.name + ".txt")
-                    # ^this currently is broken because I changed what is being saved
-                    #  when fixed should maybe be called later than it is 
+                goal.load() # load goal progress
                 
                 self.add_goal(goal)
 
@@ -147,7 +145,7 @@ class GoalList:
             outfile.write(str(g.finish) + ",")  
             outfile.write(str(g.progress) + "\n")
             #save g to (g.name).txt
-            g.save(g.name + ".txt")
+            g.save()
 
         outfile.close()
             
