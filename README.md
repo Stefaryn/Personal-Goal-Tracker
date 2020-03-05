@@ -4,7 +4,9 @@ This is a README for Personal-Goal-Tracker.
 It is intended to provide only a high-level guide to other files in the project which contain the real information.
 
 Created by: Stefan Fields on 3/4/2020
+
 Last Edited by: Stefan Fields on 3/4/2020
+
 Team members: Naser Alkhateri, Stefan Fields, Cory Ingram, Maura McCabe, Leonie Way
 
 I. Files provided
