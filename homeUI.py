@@ -3,6 +3,7 @@
 from tkinter import *
 from tkinter import simpledialog
 import goal
+import graph
 import os.path
 graphok = 0
 try:
@@ -205,9 +206,16 @@ class HomeUI:
         
     def view_graph(self):
         print("graph")
+	    
+        selection = self.lbox.curselection()
+        #TO DO: prompt user to select a goal
+        if selection is ():
+            print("DEBUG: selection is empty")
+        else:
+             print("DEBUG: selection is ",selection[0])
+             graph.build_graph(self.goal_list.goals[int(selection[0])])
             
-            
-            
+        
            
 
 

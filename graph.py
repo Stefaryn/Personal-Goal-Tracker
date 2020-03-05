@@ -1,6 +1,8 @@
  
 import matplotlib.pyplot as plt
 import matplotlib.dates as plt_dates
+import matplotlib.dates as mdates
+
 from datetime import datetime, timedelta, date
 import time
 
@@ -38,7 +40,19 @@ def build_graph(goalObj):
 
     #initial display of graph's limits
     ax.set_ylim(-0.2, goalObj.finish)
-    ax.set_xlim(timestamps[0] - timedelta(days=1), date.today())
+
+    # Get the range of the dates
+    date_range = timestamps[-1] - timestamps[0]
+    print(date_range)
+    days_padding = (5 - date_range.days)
+    days_padding = max(1, days_padding)
+
+    start_date = timestamps[0] - timedelta(days=1)
+    end_date = timestamps[-1] + timedelta(days=days_padding)
+    ax.set_xlim(start_date, end_date)
+
+    date_fmt = mdates.DateFormatter('%b %d, %Y')
+    ax.xaxis.set_major_formatter(date_fmt)
 	
     #gcf stands for 'get current figure' to show dates slanted
     plt.gcf().autofmt_xdate()
