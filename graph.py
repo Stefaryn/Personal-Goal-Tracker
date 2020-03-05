@@ -1,7 +1,11 @@
  
-import matplotlib.pyplot as plt
-import matplotlib.dates as plt_dates
-import matplotlib.dates as mdates
+try:
+    import matplotlib.pyplot as plt
+    import matplotlib.dates as plt_dates
+    import matplotlib.dates as mdates
+except ModuleNotFoundError:
+    print("\nMatplotlib is not installed please refer to the user installation document.\n")
+    exit(1)
 
 from datetime import datetime, timedelta, date
 import time
@@ -11,11 +15,16 @@ plt.style.use('seaborn')
 
 def build_graph(goalObj):
 
-    milestones = [] #goalObj.prog_rec
+    milestones = []
     timestamps = []
     notes = []
-    data_x = []
-    data_y = []
+
+
+
+    if len(goalObj.rec) < 1:
+    	print("DEBUG: no progress found in this goal")
+    	return
+
     for node in goalObj.rec:
         print("GRAPH DEBUG:",node.time)
         node_time = str(node.time)
@@ -30,13 +39,11 @@ def build_graph(goalObj):
     print("milestones:",milestones)
     print("timestamps:",timestamps)
     print("Finish",goalObj.finish)
-    data_x.append(timestamps[0])
-    data_y.append(milestones[0])
-    print(data_x, data_y)
+
 
     fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(111)
-    line, = ax.plot(timestamps[0], milestones[0], '-o', picker=goalObj.finish)
+    line, = ax.plot(timestamps, milestones, '-o', picker=goalObj.finish)
 
     #initial display of graph's limits
     ax.set_ylim(-0.2, goalObj.finish)
@@ -64,7 +71,7 @@ def build_graph(goalObj):
 	
     #lets the graph use the whole window
     plt.tight_layout()
-    txt = ax.text(timestamps[0], goalObj.finish-1, '', va="center",fontsize=16,
+    txt = ax.text(timestamps[0], goalObj.finish-(1/10*goalObj.finish), '', va="center",fontsize=16,
                   bbox=dict(boxstyle='round', color='lightskyblue')
                   )
 
@@ -91,6 +98,7 @@ def build_graph(goalObj):
         print("debug on pick event",ind)
         print("DEBUG notes:",notes[ind[0]])
         text = txt_format(notes[ind[0]])
+        
         print("DEBUG text:",text)
         txt.set_text(str(text))
         fig.canvas.draw()
@@ -103,26 +111,14 @@ def build_graph(goalObj):
         fig.canvas.draw()
         fig.canvas.flush_events()
 
-    for i in range(1, len(milestones)):
-        data_x.append(timestamps[i])
-        data_y.append( milestones[i])
-
-        line.set_xdata(data_x)
-        line.set_ydata(data_y)
-
-        fig.canvas.draw()
-        fig.canvas.flush_events()
-
-        print(data_x, data_y)
-        time.sleep(.25)
 
     cid = fig.canvas.mpl_connect('pick_event', on_pick)
     fig.canvas.mpl_connect('figure_leave_event', on_leave)
         
-    plt.show(False)
+
     
 
-    plt.show()
+    plt.show(block=False)
 	
 	
 	
