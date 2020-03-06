@@ -115,6 +115,18 @@ class SurveyUI:
 			inputValue4 = self.textBox4.get()
 			inputValue5 = self.textBox5.get()
 
+			inputArray = [5]
+
+			
+			inputArray[0] = inputValue
+			inputArray[1] = inputValue2
+			inputArray[2] = inputValue3
+			inputArray[3] = inputValue4
+			inputArray[4] = inputValue5
+
+
+
+
 			# print(inputValue)
 			# print(inputValue2)
 			# print(inputValue3)
@@ -123,6 +135,8 @@ class SurveyUI:
 
 
 		self.root.mainloop()
+
+#Display survey function - new UI, displaing survey answers without submit button
 
 
 
