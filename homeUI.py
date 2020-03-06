@@ -137,6 +137,7 @@ class HomeUI:
             if goalamt is None:
                 goalamt = 1
             self.goal_list.goals.append(goal.Goal(newgoal,goalamt,0)) # add goal to goal list
+            self.goal_list.goals[-1].update(0, "Goal Created")
             self.goal_list.save() # updates save data
             self.set_listbox() # updates listbox display
             print(self.goal_list)
