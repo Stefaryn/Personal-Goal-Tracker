@@ -14,7 +14,7 @@ import time
 plt.style.use('seaborn')
 
 def build_graph(goalObj):
-'''
+    '''
 	This function is called in homeUI.py with a goal's object to display
 	a graphical representation of a goal for the user.
 	
@@ -24,7 +24,8 @@ def build_graph(goalObj):
 	timestamps: a list of dates that corresponds to the milestones
 	notes: a list of strings that corresponds to the milestones
 
-'''
+        '''
+
     milestones = []
     timestamps = []
     notes = []
