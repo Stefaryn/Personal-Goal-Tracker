@@ -2,8 +2,8 @@
 
 from tkinter import *
 from tkinter import simpledialog
+from tkinter import messagebox
 import goal
-import graph
 import os.path
 graphok = 0
 try:
@@ -86,8 +86,6 @@ class HomeUI:
         self.scbar.pack(side=RIGHT, fill=Y)
         self.libox.pack(side=LEFT, fill=BOTH, expand=1)
         
-        # create event when selecting note in 2nd listbox
-        #self.libox.bind("<<ListboxSelect>>", self.show_note_details)
 
         # create details frame for text messages
         self.dframe = Frame(self.root)
@@ -105,13 +103,9 @@ class HomeUI:
         self.detail = Label(self.dframe, textvariable=self.text1).grid(row=0, column=0)
         self.windowstabilizer = Label(self.dframe, textvariable=self.text0).grid(row=1, column=0)
         
-        # create note frame
+        # create display buttons frame
         self.nframe = Frame(self.root)
         self.nframe.grid(row=1, column=2)
-        # self.ntext = StringVar()
-        # self.ntext.set("")
-        # self.nlabel = Label(self.nframe, textvariable=self.ntext)
-        # self.nlabel.pack()
         
         # create additional buttons
         self.notebutton = Button(self.nframe, text="View Note", command=self.view_note)
@@ -165,20 +159,38 @@ class HomeUI:
             self.lpointer = int(selection[0]) # sets the pointer in the goal list to be the same as the highlighted listbox entry
             self.text1.set("Working on %s\nProgress:\n%d/%d" %(self.goal_list.goals[self.lpointer].name, self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
             self.set_note_listbox() # update display on note listbox to notes of the selected goal
-            #self.ntext.set("")
         
     def add_progress(self):
         selection = self.lbox.curselection()
+        note_select = self.libox.curselection()
         if selection:
             self.lpointer = int(selection[0])
-            new_prog = simpledialog.askinteger("Input", "How much progress have you made?", parent=self.root, minvalue=1, maxvalue=(self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress))
-            if new_prog:
-                new_note = simpledialog.askstring("Input", "Any thoughts on this progress?", parent=self.root)
-                self.goal_list.goals[self.lpointer].update(new_prog, new_note)
-                print(self.goal_list.goals[self.lpointer])
-                self.text1.set("Working on %s\nProgress:\n%d/%d" %(self.goal_list.goals[self.lpointer].name, self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
-                self.set_note_listbox()
-                self.goal_list.save() # updates save data
+            if (self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress) > 0:
+                new_prog = simpledialog.askinteger("Input", "How much progress have you made?", parent=self.root, minvalue=1, maxvalue=(self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress))
+                if new_prog:
+                    new_note = simpledialog.askstring("Input", "Any thoughts on this progress?", parent=self.root)
+                    self.goal_list.goals[self.lpointer].update(new_prog, new_note)
+                    print(self.goal_list.goals[self.lpointer])
+                    self.text1.set("Working on %s\nProgress:\n%d/%d" %(self.goal_list.goals[self.lpointer].name, self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
+                    self.set_note_listbox()
+                    self.goal_list.save() # updates save data
+            else:
+                messagebox.showwarning("Warning", "Goal already completed")
+        else:
+            if note_select:
+                if (self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress) > 0:
+                    new_prog = simpledialog.askinteger("Input", "How much progress have you made?", parent=self.root, minvalue=1, maxvalue=(self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress))
+                    if new_prog:
+                        new_note = simpledialog.askstring("Input", "Any thoughts on this progress?", parent=self.root)
+                        self.goal_list.goals[self.lpointer].update(new_prog, new_note)
+                        print(self.goal_list.goals[self.lpointer])
+                        self.text1.set("Working on %s\nProgress:\n%d/%d" %(self.goal_list.goals[self.lpointer].name, self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
+                        self.set_note_listbox()
+                        self.goal_list.save() # updates save data
+                else:
+                    messagebox.showwarning("Warning", "Goal already completed")
+            else:
+                messagebox.showwarning("Warning", "No goal selected")
             
     def set_note_listbox(self):
         '''
@@ -188,32 +200,36 @@ class HomeUI:
         for node in self.goal_list.goals[self.lpointer].rec:
             self.libox.insert(END, "{node.time}".format(node=node)) # refill list box with each node in selected goal
             
-    #def show_note_details(self, event):
+            
+    def view_note(self):
         '''
         Displays text for a selected note
         '''
-        #note_select = self.libox.curselection() # gets position of highlighted listbox entry
-        # if no note selected do nothing else
-        #if note_select:
-            #self.npointer = int(note_select[0]) # set pointer in node list to the same as highlighted listbox entry
-            #self.ntext.set("%s" % (self.goal_list.goals[self.lpointer].rec[self.npointer].note)) # diplay note text
-            
-    def view_note(self):
-        print("note")
+        note_select = self.libox.curselection() # gets position of highlighted listbox entry
+        if note_select:
+            self.npointer = int(note_select[0]) # set pointer in node list to the same as highlighted listbox entry
+            messagebox.showinfo("note", self.goal_list.goals[self.lpointer].rec[self.npointer].note) # display note text
+        else:
+            messagebox.showwarning("Warning", "No note selected")
         
     def view_survey(self):
         print("Survey")
         
     def view_graph(self):
-        print("graph")
-	    
-        selection = self.lbox.curselection()
-        #TO DO: prompt user to select a goal
-        if selection is ():
-            print("DEBUG: selection is empty")
+        if graphok == 0:	    
+            selection = self.lbox.curselection()
+            note_select = self.libox.curselection()
+            if selection:
+                self.lpointer = int(selection[0])
+                graph.build_graph(self.goal_list.goals[self.lpointer])
+            else:
+                if note_select:
+                    graph.build_graph(self.goal_list.goals[self.lpointer]) # if cursor is on a note then a goal must have already been selected and lpointer already set.
+                else:
+                    messagebox.showwarning("Warning", "No goal selected")
         else:
-             print("DEBUG: selection is ",selection[0])
-             graph.build_graph(self.goal_list.goals[int(selection[0])])
+            messagebox.showwarning("Warning", "Matplotlib is not installed please refer to the user installation document.")
+        
             
         
            

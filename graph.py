@@ -1,11 +1,11 @@
  
-try:
-    import matplotlib.pyplot as plt
-    import matplotlib.dates as plt_dates
-    import matplotlib.dates as mdates
-except ModuleNotFoundError:
-    print("\nMatplotlib is not installed please refer to the user installation document.\n")
-    exit(1)
+#try:
+import matplotlib.pyplot as plt
+import matplotlib.dates as plt_dates
+import matplotlib.dates as mdates
+#except ModuleNotFoundError:
+#    print("\nMatplotlib is not installed please refer to the user installation document.\n")
+#    exit(1)
 
 from datetime import datetime, timedelta, date
 import time
