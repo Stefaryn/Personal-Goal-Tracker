@@ -169,6 +169,7 @@ class HomeUI:
                 new_prog = simpledialog.askinteger("Input", "How much progress have you made?", parent=self.root, minvalue=1, maxvalue=(self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress))
                 if new_prog:
                     new_note = simpledialog.askstring("Input", "Any thoughts on this progress?", parent=self.root)
+                    # add survey
                     self.goal_list.goals[self.lpointer].update(new_prog, new_note)
                     print(self.goal_list.goals[self.lpointer])
                     self.text1.set("Working on %s\nProgress:\n%d/%d" %(self.goal_list.goals[self.lpointer].name, self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
@@ -182,6 +183,7 @@ class HomeUI:
                     new_prog = simpledialog.askinteger("Input", "How much progress have you made?", parent=self.root, minvalue=1, maxvalue=(self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress))
                     if new_prog:
                         new_note = simpledialog.askstring("Input", "Any thoughts on this progress?", parent=self.root)
+                        # add survey
                         self.goal_list.goals[self.lpointer].update(new_prog, new_note)
                         print(self.goal_list.goals[self.lpointer])
                         self.text1.set("Working on %s\nProgress:\n%d/%d" %(self.goal_list.goals[self.lpointer].name, self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
