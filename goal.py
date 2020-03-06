@@ -30,7 +30,7 @@ class Goal:
         self.progress = progress
 
         #initialize lists for update tracking,
-        self.rec = []
+        self.rec = [Node(0, date.today(), "goal created")]
 
 
     def __repr__(self) -> str:
