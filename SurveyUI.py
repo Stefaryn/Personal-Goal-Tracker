@@ -117,9 +117,10 @@ class SurveyUI(Frame):
         self.buttonCommit5 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
         self.buttonCommit5.place(y=470, x=400)
 
+        
         #self.goal_list.goals[self.goal_n].update(0, self.note, self.inputArray)
 
-        
+        #self.goal_list.goals[self.goal_n].update(0, self.note, self.inputArray)
 
         def retrieve_text():
             self.inputArray = []
@@ -139,10 +140,13 @@ class SurveyUI(Frame):
             self.inputArray.append(inputValue5)
 
 
-            self.goal_list.goals[self.goal_n].update(0, self.note, self.inputArray)
+            survey = self.goal_list.goals[self.goal_n].update(0, self.note, self.inputArray)
+            return self.inputArray
 
-
-                
+            # self.goal_list.save()
+            #print(self.inputArray)
+            #return self.inputArray
+    
 
             #print(self.inputArray)
 
