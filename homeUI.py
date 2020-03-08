@@ -6,8 +6,12 @@ from tkinter import messagebox
 import goal
 import os.path
 import SurveyUI
+<<<<<<< HEAD
+import csv
+=======
 import DisplayUI
 from SurveyUI import SurveyUI as survey_ui
+>>>>>>> 191a8fbad5bb3d2dd1455e78c9b61afbd406225b
 graphok = 0
 try:
     import graph
@@ -257,6 +261,32 @@ class HomeUI:
         # survey_result = survey_ui.retrieve_text()
         # print(survey_result)
         top = Toplevel()
+<<<<<<< HEAD
+        survey_data = []
+        survey_select = self.libox.curselection()
+        if survey_select:
+            self.npointer = int(survey_select[0])
+            goal_name = self.goal_list.goals[self.lpointer].name
+            filename = goal_name.replace(" ","_")
+            filename = "surveys/" + filename + "_survey"+ str(self.npointer)+ ".csv"
+            if os.path.exists(filename):
+                with open(filename,"r") as csvfile:
+                    csv_reader = csv.reader(csvfile, delimiter=",")
+                    for row in csv_reader:
+                        survey_data.append(row)
+
+                    
+                csvfile.close()
+            messagebox.showinfo("survey",survey_data)
+
+        #     messagebox.showinfo("survey", self.goal_list.goals[self.lpointer].rec[self.npointer].survey) # display note text
+        # else:
+        #     messagebox.showwarning("Warning", "No survey selected")
+
+        #this is temporary
+         
+
+=======
         survey_select = self.li_box.curselection()
         if survey_select:
             survey = DisplayUI.SurveyUI(top)
@@ -275,6 +305,7 @@ class HomeUI:
         #     messagebox.showinfo("survey", self.goal_list.goals[self.lpointer].rec[].survey) # display note text
         else:
             messagebox.showwarning("Warning", "No survey selected")
+>>>>>>> 191a8fbad5bb3d2dd1455e78c9b61afbd406225b
 
 
         
