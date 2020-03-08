@@ -257,6 +257,7 @@ class HomeUI:
     def view_survey(self):
         # survey_result = survey_ui.retrieve_text()
         # print(survey_result)
+        top = Toplevel()
         survey_data = []
         survey_select = self.libox.curselection()
         if survey_select:
@@ -272,7 +273,13 @@ class HomeUI:
 
                     
                 csvfile.close()
-            messagebox.showinfo("survey",survey_data)
+            #messagebox.showinfo("survey",survey_data)
+            survey = DisplayUI.SurveyUI(top, survey_data)
+
+            survey.pack()
+            survey.grab_set()
+
+            self.root.wait_window(top)
 
         #     self.survey_pointer = int(survey_select[0])
 
