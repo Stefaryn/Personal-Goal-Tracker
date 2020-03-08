@@ -6,13 +6,10 @@ import goal
 
 
 def init_goal():
-	goalOne = goal.Goal("Horse Riding", 9)
-	goalOne.progress = 0
-	goalOne.time_rec = ['2020-02-10']
-	goalOne.prog_rec = [0]
-	goalOne.note_rec = ['goal created']
+	goalOne = goal.Goal("",12)
+	goalOne.load("testGoal")
 	graph.build_graph(goalOne)
-	
+
 def prog_one():
 	goalOne = goal.Goal("Horse Riding", 9)
 	goalOne.progress = 3
@@ -37,9 +34,9 @@ def prog_two():
 
 def main():
     init_goal()
-    prog_one()
-    prog_two()
-	
+#    prog_one()
+#    prog_two()
+
 
 if __name__ == '__main__':
 	main()

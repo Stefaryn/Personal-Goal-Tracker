@@ -11,11 +11,11 @@ class Node:
     '''
 
     '''
-    def __init__(self, progress: int, time: date, note: str, survey: list):
+    def __init__(self, progress: int, time: date, note: str):
         self.progress = progress
         self.time = time
         self.note = note
-        self.survey = survey
+        #self.survey = survey
        
         
 
@@ -31,18 +31,18 @@ class Goal:
         self.progress = progress
         #self.survey = survey
         self.rec = []
-        self.survey = []
+        #self.survey = []
 
 
     def __repr__(self) -> str:
         return f"Goal: {self.name}, Finish: {self.finish}, Progress: {self.progress}"
 
-    def update(self, change: int, note: str = "", survey = []):
+    def update(self, change: int, note: str = ""):
         self.progress += change
 
-        self.survey = survey
+        #self.survey = survey
         #record goal update for graphing
-        self.rec.append( Node(self.progress, date.today(), note, self.survey) )
+        self.rec.append( Node(self.progress, date.today(), note) )
         
 
     def getFilename(self):
@@ -61,8 +61,7 @@ class Goal:
                 csv_reader = csv.reader(csvfile, delimiter=",")
                 next(csvfile)
                 for row in csv_reader:
-                    survey = [row[3], row[4], row[5], row[6],row[7]]
-                    self.rec.append(Node(row[0], date.fromordinal(int(row[1])), row[2], survey))
+                    self.rec.append(Node(row[0], date.fromordinal(int(row[1])), row[2]))
 
                     
             csvfile.close()
@@ -85,7 +84,7 @@ class Goal:
             filewriter.writerow(["Progress","Date","Note"])
 
             for p in self.rec:
-                filewriter.writerow([p.progress, p.time.toordinal(), p.note, p.survey[0], p.survey[1],p.survey[2],p.survey[3],p.survey[4]])
+                filewriter.writerow([p.progress, p.time.toordinal(), p.note])
         csvfile.close()
         
 

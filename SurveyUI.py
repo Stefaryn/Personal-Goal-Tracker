@@ -14,7 +14,7 @@ class SurveyUI(Frame):
         Frame.__init__(self, master)
 
         self.goal_n = goal_n
-        print("goal number",self.goal_n)
+
         self.note = new_note
 
 
@@ -22,12 +22,13 @@ class SurveyUI(Frame):
         if os.path.exists("files/savefile.csv"):
             self.goal_list.load()
 
-        
+
 
         self.goal_name = str(self.goal_list.goals[self.goal_n].name)
         print("IN SURVEY: goal_name",self.goal_name)
         self.goal_size = len(self.goal_list.goals[self.goal_n].rec)
         print("IN SURVEY: goal_size",self.goal_size)
+
         self.frame = Frame(self, width=500, height= 500)
 
         self.frame1 = Frame(self.frame)
@@ -138,20 +139,22 @@ class SurveyUI(Frame):
             inputValue4 = self.textBox4.get()
             inputValue5 = self.textBox5.get()
 
-            
+
             
             self.inputArray.append(inputValue)
             self.inputArray.append(inputValue2)
             self.inputArray.append(inputValue3)
             self.inputArray.append(inputValue4)
             self.inputArray.append(inputValue5)
+
             print("inputArray", self.inputArray)
             save_survey()
 
-            survey = self.goal_list.goals[self.goal_n].update(0, self.note, self.inputArray)
+
+            #survey = self.goal_list.goals[self.goal_n].update(0, self.note, self.inputArray)
             return self.inputArray
 
-<<<<<<< HEAD
+
         def save_survey():
 
             filename = self.goal_name.replace(" ","_")
@@ -164,14 +167,11 @@ class SurveyUI(Frame):
                     #You could add the questions too
                     filewriter.writerow([note])
             csvfile.close()
-        
-            
-=======
+
             # self.goal_list.save()
             #print(self.inputArray)
             #return self.inputArray
     
->>>>>>> 191a8fbad5bb3d2dd1455e78c9b61afbd406225b
 
             #print(self.inputArray)
 
