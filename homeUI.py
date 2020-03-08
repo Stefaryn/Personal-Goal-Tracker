@@ -272,15 +272,21 @@ class HomeUI:
                     for row in csv_reader:
                         survey_data.append(row)
 
-                    
+                
                 csvfile.close()
+                survey = DisplayUI.SurveyUI(top, survey_data)
+
+                survey.pack()
+                survey.grab_set()
+
+                self.root.wait_window(top)
+
+            else:
+                print(survey_data)
+                messagebox.showwarning("Survey does not exist", "Survey does not exist")
+
             #messagebox.showinfo("survey",survey_data)
-            survey = DisplayUI.SurveyUI(top, survey_data)
 
-            survey.pack()
-            survey.grab_set()
-
-            self.root.wait_window(top)
 
         #     self.survey_pointer = int(survey_select[0])
 
