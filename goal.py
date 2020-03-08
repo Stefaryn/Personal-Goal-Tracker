@@ -11,12 +11,13 @@ class Node:
     '''
 
     '''
-    def __init__(self, progress: int, time: date, note: str):
+    def __init__(self, progress: int, time: date, note: str, survey: list):
         self.progress = progress
         self.time = time
         self.note = note
-
-
+        self.survey = survey
+       
+        
 
 class Goal:
     '''
@@ -28,19 +29,21 @@ class Goal:
         self.name = name
         self.finish = finish
         self.progress = progress
+        #self.survey = survey
         self.rec = []
-     
+        self.survey = []
 
 
     def __repr__(self) -> str:
         return f"Goal: {self.name}, Finish: {self.finish}, Progress: {self.progress}"
 
-    def update(self, change: int, note: str = ""):
+    def update(self, change: int, note: str = "", survey = []):
         self.progress += change
 
+        self.survey = survey
         #record goal update for graphing
-
-        self.rec.append( Node(self.progress, date.today(), note) )
+        self.rec.append( Node(self.progress, date.today(), note, self.survey) )
+        
 
     def getFilename(self):
         filename = self.name.replace(" ","_")
@@ -58,7 +61,7 @@ class Goal:
                 csv_reader = csv.reader(csvfile, delimiter=",")
                 next(csvfile)
                 for row in csv_reader:
-                    self.rec.append(Node(row[0], date.fromordinal(int(row[1])), row[2]))
+                    self.rec.append(Node(row[0], date.fromordinal(int(row[1])), row[2], []))
 
                     
             csvfile.close()
@@ -125,6 +128,7 @@ class GoalList:
             outfile.write(g.name + ",")
             outfile.write(str(g.finish) + ",")  
             outfile.write(str(g.progress) + "\n")
+
             #save g to (g.name).txt
             g.save()
 

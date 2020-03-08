@@ -1,14 +1,25 @@
 
 from tkinter import *
 from tkinter.font import Font
+import goal
+import os
 
 class SurveyUI(Frame):
 
 
-    def __init__(self, master):
+    def __init__(self, master, goal_n, new_note):
 
         self.master = master
         Frame.__init__(self, master)
+
+        self.goal_n = goal_n
+
+        self.note = new_note
+
+
+        self.goal_list = goal.GoalList("savefile.csv")
+        if os.path.exists("files/savefile.csv"):
+            self.goal_list.load()
 
         self.frame = Frame(self, width=500, height= 500)
 
@@ -42,8 +53,8 @@ class SurveyUI(Frame):
         self.textBox.place(y=120)
 
         #submit button for textbox
-        self.buttonCommit = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
-        self.buttonCommit.place(y=150, x=400)
+        # self.buttonCommit = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
+        # self.buttonCommit.place(y=150, x=400)
         
 
         #Second question label and placement
@@ -58,8 +69,8 @@ class SurveyUI(Frame):
         self.textBox2.place(y=200)
 
         #Submit button for textbox2
-        self.buttonCommit2 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
-        self.buttonCommit2.place(y=230, x=400)
+        # self.buttonCommit2 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
+        # self.buttonCommit2.place(y=230, x=400)
 
         #Third question label and placement
         self.fourth_label = Label(self.frame, text="What is hindering you in achieving this goal?", font=self.my_font_question, bg="pink")
@@ -73,8 +84,8 @@ class SurveyUI(Frame):
         self.textBox3.place(y=280)
 
         #Submit button for textbox3
-        self.buttonCommit3 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
-        self.buttonCommit3.place(y=310, x=400)
+        # self.buttonCommit3 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
+        # self.buttonCommit3.place(y=310, x=400)
 
         #Fourth question label and placement
         self.fifth_label = Label(self.frame, text="Can you reformat your goal to make it more achievable?", font=self.my_font_question, bg="pink")
@@ -88,8 +99,8 @@ class SurveyUI(Frame):
         self.textBox4.place(y=360)
 
         #Submit button for textbox4
-        self.buttonCommit4 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
-        self.buttonCommit4.place(y=390, x=400)
+        # self.buttonCommit4 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
+        # self.buttonCommit4.place(y=390, x=400)
 
         #Fifth question label and placement
         self.sixth_label = Label(self.frame, text="What will help you remember to continue to pursue this goal?", font=self.my_font_question, bg="pink")
@@ -106,9 +117,12 @@ class SurveyUI(Frame):
         self.buttonCommit5 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
         self.buttonCommit5.place(y=470, x=400)
 
+        #self.goal_list.goals[self.goal_n].update(0, self.note, self.inputArray)
+
         
 
         def retrieve_text():
+            self.inputArray = []
             
             inputValue = self.textBox.get()
             inputValue2 = self.textBox2.get()
@@ -116,28 +130,28 @@ class SurveyUI(Frame):
             inputValue4 = self.textBox4.get()
             inputValue5 = self.textBox5.get()
 
-            inputArray = [5]
 
             
-            inputArray[0] = inputValue
-            inputArray[1] = inputValue2
-            inputArray[2] = inputValue3
-            inputArray[3] = inputValue4
-            inputArray[4] = inputValue5
+            self.inputArray.append(inputValue)
+            self.inputArray.append(inputValue2)
+            self.inputArray.append(inputValue3)
+            self.inputArray.append(inputValue4)
+            self.inputArray.append(inputValue5)
 
 
+            self.goal_list.goals[self.goal_n].update(0, self.note, self.inputArray)
 
 
-            # print(inputValue)
-            # print(inputValue2)
-            # print(inputValue3)
-            # print(inputValue4)
-            # print(inputValue5)
+                
 
+            #print(self.inputArray)
 
-        #self.root.mainloop()
+            
+            #self.goal_list.goals[self.goal_n].set_survey(self.inputArray)
+            
+            
+            #print(self.goal_list.goals[self.goal_n].rec)
 
-#Display survey function - new UI, displaing survey answers without submit button
 
 
 
@@ -146,3 +160,5 @@ if __name__ == '__main__':
     f = SurveyUI(root)
     f.pack()
     root.mainloop()
+
+

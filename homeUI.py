@@ -167,17 +167,22 @@ class HomeUI:
         note_select = self.libox.curselection()
         if selection:
             self.lpointer = int(selection[0])
+            #self.npointer = int(note_select[0])
+            #print(self.lpointer)
+            #print(self.goal_list.goals[self.lpointer])
             if (self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress) > 0:
                 new_prog = simpledialog.askinteger("Input", "How much progress have you made?", parent=self.root, minvalue=1, maxvalue=(self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress))
                 if new_prog:
                     new_note = simpledialog.askstring("Input", "Any thoughts on this progress?", parent=self.root)
                     top = Toplevel()
-                    survey = SurveyUI.SurveyUI(top)
+                    survey = SurveyUI.SurveyUI(top, self.lpointer, new_note)
                     survey.pack()
                     survey.grab_set()
                     self.root.wait_window(top)
+
                     self.goal_list.goals[self.lpointer].update(new_prog, new_note)
-                    print(self.goal_list.goals[self.lpointer])
+
+                    #print(self.goal_list.goals[self.lpointer])
                     self.text1.set("Working on %s\nProgress:\n%d/%d" %(self.goal_list.goals[self.lpointer].name, self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
                     self.set_note_listbox()
                     self.goal_list.save() # updates save data
@@ -185,12 +190,13 @@ class HomeUI:
                 messagebox.showwarning("Warning", "Goal already completed")
         else:
             if note_select:
+                #self.npointer = int(note_select[0])
                 if (self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress) > 0:
                     new_prog = simpledialog.askinteger("Input", "How much progress have you made?", parent=self.root, minvalue=1, maxvalue=(self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress))
                     if new_prog:
                         new_note = simpledialog.askstring("Input", "Any thoughts on this progress?", parent=self.root)
                         top = Toplevel()
-                        survey = SurveyUI.SurveyUI(top)
+                        survey = SurveyUI.SurveyUI(top, self.lpointer, new_note)
                         survey.pack()
                         survey.grab_set()
                         self.root.wait_window(top)
@@ -220,12 +226,22 @@ class HomeUI:
         note_select = self.libox.curselection() # gets position of highlighted listbox entry
         if note_select:
             self.npointer = int(note_select[0]) # set pointer in node list to the same as highlighted listbox entry
+            print(self.goal_list.goals[self.lpointer].rec[self.npointer].survey)
             messagebox.showinfo("note", self.goal_list.goals[self.lpointer].rec[self.npointer].note) # display note text
         else:
             messagebox.showwarning("Warning", "No note selected")
         
     def view_survey(self):
-        print("Survey")
+        top = Toplevel()
+        survey_select = self.libox.curselection()
+        if survey_select:
+            self.npointer = int(survey_select[0])
+
+            messagebox.showinfo("survey", self.goal_list.goals[self.lpointer].rec[self.npointer].survey) # display note text
+        else:
+            messagebox.showwarning("Warning", "No survey selected")
+
+
         
     def view_graph(self):
         if graphok == 0:	    
