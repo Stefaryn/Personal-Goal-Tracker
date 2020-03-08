@@ -4,15 +4,17 @@ def init_goal():
     
     goalOne = goal.Goal("Horse Riding1", 9)
 
-    goalOne.update(1,"rode a pony")
-    goalOne.update(1,"it kicked me")
+    goalOne.update(1,"rode a pony", ["a", "b", "c", "d", "e"])
+    goalOne.update(1,"it kicked me", ["aa", "bb", "cc", "dd", "ee"])
 
     goalOne.save()
     print(goalOne.rec[0].time.month)
+    print(goalOne.rec[0].survey)
     
     goalTwo = goal.Goal("Horse Riding1", 9)
     goalTwo.load()
     print(goalTwo.rec[0].time)
+    print(goalTwo.rec[0].survey)
 
 def read_goal():
 
