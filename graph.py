@@ -60,7 +60,7 @@ def build_graph(goalObj):
     ax = fig.add_subplot(111)
 
     # plots the first data of the goal, sets the graph to be lines and clickable points
-    line, = ax.plot(timestamps, milestones, '-o', picker=goalObj.finish)
+    line, = ax.plot(timestamps, milestones, '-o', picker=goalObj.finish, color='#fb8dd3')
 
     #set default y axis limit
     ax.set_ylim(-0.2, goalObj.finish)
@@ -95,7 +95,7 @@ def build_graph(goalObj):
 
     #displays the notes when called, always exist but its empty when not triggered
     txt = ax.text(timestamps[0], goalObj.finish-(1/10*goalObj.finish), '', va="center",fontsize=16,
-                  bbox=dict(boxstyle='round', color='lightskyblue')
+                  bbox=dict(boxstyle='round', color='pink')
                   )
 
 
