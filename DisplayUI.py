@@ -8,7 +8,7 @@ import os
 class SurveyUI(Frame):
 
 
-    def __init__(self, master):
+    def __init__(self, master, survey_data):
 
         self.master = master
         Frame.__init__(self, master)
@@ -17,6 +17,16 @@ class SurveyUI(Frame):
 
         #self.note = new_note
 
+        self.survey_data = survey_data
+       
+        print(self.survey_data)
+        self.question1 = survey_data[0]
+        self.question2 = survey_data[1]
+        self.question3 = survey_data[2]
+        self.question4 = survey_data[3]
+        self.question5 = survey_data[4]
+
+        
 
         self.goal_list = goal.GoalList("savefile.csv")
         if os.path.exists("files/savefile.csv"):
@@ -32,7 +42,8 @@ class SurveyUI(Frame):
 
         self.my_font_title = Font(size = 20)
         self.my_font_question = Font(size = 15)
-        self.my_font_description = Font(size = 12)
+        self.my_font_description = Font(size = 14)
+        self.my_font_answer = Font(size=13)
         self.first_label = Label(self.frame,
             text="Survey",
             font=self.my_font_title, bg="pink")
@@ -43,15 +54,12 @@ class SurveyUI(Frame):
         self.description_label.place(y=50)
 
         #First question label and placement
-        self.second_label = Label(self.frame, text="How are you feeling?", font=self.my_font_question, bg="pink")
+        self.second_label = Label(self.frame, text="1. How are you feeling?", font=self.my_font_question, bg="pink")
         self.second_label.place(y= 100, anchor = W)
 
-        #string variable1 associated with answer to the first question
-        self.variable1 = StringVar()
+        self.question_label = Label(self.frame, text = self.question1, font=self.my_font_answer, bg="pink", wraplength = 450, justify=LEFT, relief = RIDGE)
+        self.question_label.place(y=140, anchor = W)
 
-        #Text Box for the first question
-        self.textBox = Entry(self.frame, width= 50, textvariable = self.variable1, bg="pink")
-        self.textBox.place(y=120)
 
         #submit button for textbox
         # self.buttonCommit = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
@@ -59,60 +67,42 @@ class SurveyUI(Frame):
         
 
         #Second question label and placement
-        self.third_label = Label(self.frame, text="How do you feel while completing your goal?", font=self.my_font_question, bg="pink")
+        self.third_label = Label(self.frame, text="2. How do you feel while completing your goal?", font=self.my_font_question, bg="pink")
         self.third_label.place(y= 180, anchor = W)
 
-        #string variable2 associated with answer to the Second question
-        self.variable2 = StringVar()
-
-        #Text Box for the second question
-        self.textBox2 = Entry(self.frame, width= 50, textvariable = self.variable2, bg="pink")
-        self.textBox2.place(y=200)
-
+        self.question_label2 = Label(self.frame, text = self.question2, font=self.my_font_answer, bg="pink", wraplength = 450, justify = LEFT, relief = RIDGE)
+        self.question_label2.place(y=220, anchor = W)
         #Submit button for textbox2
         # self.buttonCommit2 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
         # self.buttonCommit2.place(y=230, x=400)
 
         #Third question label and placement
-        self.fourth_label = Label(self.frame, text="What is hindering you in achieving this goal?", font=self.my_font_question, bg="pink")
+        self.fourth_label = Label(self.frame, text="3. What is hindering you in achieving this goal?", font=self.my_font_question, bg="pink")
         self.fourth_label.place(y= 260, anchor = W)
 
-        #string variable3 associated with answer to the third question
-        self.variable3 = StringVar()
-
-        #Text Box for the third question
-        self.textBox3 = Entry(self.frame, width= 50, textvariable = self.variable3, bg="pink")
-        self.textBox3.place(y=280)
-
+        self.question_label3 = Label(self.frame, text = self.question3, font=self.my_font_answer, bg="pink", wraplength = 450, justify = LEFT, relief = RIDGE)
+        self.question_label3.place(y=300, anchor = W)
         #Submit button for textbox3
         # self.buttonCommit3 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
         # self.buttonCommit3.place(y=310, x=400)
 
         #Fourth question label and placement
-        self.fifth_label = Label(self.frame, text="Can you reformat your goal to make it more achievable?", font=self.my_font_question, bg="pink")
+        self.fifth_label = Label(self.frame, text="4. Can you reformat your goal to make it more achievable?", font=self.my_font_question, bg="pink")
         self.fifth_label.place(y= 340, anchor = W)
 
-        #string variable4 associated with answer to the fourth question
-        self.variable4 = StringVar()
-
-        #Text Box for the fourth question
-        self.textBox4 = Entry(self.frame, width= 50, textvariable = self.variable4, bg="pink")
-        self.textBox4.place(y=360)
+        self.question_label4 = Label(self.frame, text = self.question4, font=self.my_font_answer, borderwidth=1, bg="pink", wraplength=450, justify = LEFT, relief = RIDGE)
+        self.question_label4.place(y=380, anchor = W)
 
         #Submit button for textbox4
         # self.buttonCommit4 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
         # self.buttonCommit4.place(y=390, x=400)
 
         #Fifth question label and placement
-        self.sixth_label = Label(self.frame, text="What will help you remember to continue to pursue this goal?", font=self.my_font_question, bg="pink")
+        self.sixth_label = Label(self.frame, text="5. What will help you remember to continue to pursue this goal?", font=self.my_font_question, bg="pink")
         self.sixth_label.place(y= 420, anchor = W)
 
-        #string variable5 associated with answer to the fifth question
-        self.variable5 = StringVar()
-
-        #Text Box for the fifth question
-        self.textBox5 = Entry(self.frame, width= 50, textvariable = self.variable5, bg="pink")
-        self.textBox5.place(y=440)
+        self.question_label5 = Label(self.frame, text = self.question5, font=self.my_font_answer, bg="pink", wraplength=450, justify = LEFT, relief = RIDGE)
+        self.question_label5.place(y=460, anchor = W)
 
         # #Submit button for textbox5
         # self.buttonCommit5 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
