@@ -3,6 +3,7 @@
 from tkinter import *
 from tkinter import simpledialog
 from tkinter import messagebox
+from tkinter.font import Font
 import goal
 import os.path
 import SurveyUI
@@ -56,10 +57,10 @@ class HomeUI:
         
         # create list box for list of goals
         self.sbar = Scrollbar(self.lframe, orient=VERTICAL)
-        self.lbox = Listbox(self.lframe, yscrollcommand=self.sbar.set, height=10)
+        self.lbox = Listbox(self.lframe, yscrollcommand=self.sbar.set, height=10, bg="pink")
         self.sbar.config(command=self.lbox.yview)
         self.sbar.pack(side=RIGHT, fill=Y)
-        self.lbox.pack(side=LEFT, fill=BOTH, expand=1)
+        self.lbox.pack(side=LEFT, expand=1)
         
         # create event when selecting a goal from the listbox
         self.lbox.bind("<<ListboxSelect>>", self.showdetails)
@@ -85,8 +86,7 @@ class HomeUI:
         self.lboxf = Frame(self.root)
         self.lboxf.grid(row=1, column=1)
         self.scbar = Scrollbar(self.lboxf, orient=VERTICAL)
-        self.libox = Listbox(self.lboxf, yscrollcommand=self.scbar.set, height=10)
-        self.scbar.config(command=self.libox.yview)
+        self.libox = Listbox(self.lboxf, yscrollcommand=self.scbar.set, height=10, bg="pink")
         self.scbar.pack(side=RIGHT, fill=Y)
         self.libox.pack(side=LEFT, fill=BOTH, expand=1)
         
@@ -102,6 +102,7 @@ class HomeUI:
         self.text1 = StringVar()
         
         # Large empty line to help prevent the window from constantly resizing
+        
         self.text0.set("                                                                       ")
         self.text1.set("Welcome to Personal Goal Tracker!\n\n")
         self.detail = Label(self.dframe, textvariable=self.text1).grid(row=0, column=0)
