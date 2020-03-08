@@ -61,7 +61,8 @@ class Goal:
                 csv_reader = csv.reader(csvfile, delimiter=",")
                 next(csvfile)
                 for row in csv_reader:
-                    self.rec.append(Node(row[0], date.fromordinal(int(row[1])), row[2], []))
+                    survey = [row[3], row[4], row[5], row[6],row[7]]
+                    self.rec.append(Node(row[0], date.fromordinal(int(row[1])), row[2], survey))
 
                     
             csvfile.close()
@@ -84,7 +85,7 @@ class Goal:
             filewriter.writerow(["Progress","Date","Note"])
 
             for p in self.rec:
-                filewriter.writerow([p.progress, p.time.toordinal(), p.note])
+                filewriter.writerow([p.progress, p.time.toordinal(), p.note, p.survey[0], p.survey[1],p.survey[2],p.survey[3],p.survey[4]])
         csvfile.close()
         
 
