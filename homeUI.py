@@ -6,6 +6,8 @@ from tkinter import messagebox
 import goal
 import os.path
 import SurveyUI
+import DisplayUI
+from SurveyUI import SurveyUI as survey_ui
 graphok = 0
 try:
     import graph
@@ -138,7 +140,7 @@ class HomeUI:
             if goalamt is None:
                 goalamt = 1
             self.goal_list.goals.append(goal.Goal(newgoal,goalamt,0)) # add goal to goal list
-            self.goal_list.goals[-1].update(0, "Goal Created")
+            self.goal_list.goals[-1].update(0, "Goal Created", [])
             self.goal_list.save() # updates save data
             self.set_listbox() # updates listbox display
             print(self.goal_list)
@@ -176,15 +178,22 @@ class HomeUI:
                     new_note = simpledialog.askstring("Input", "Any thoughts on this progress?", parent=self.root)
                     top = Toplevel()
                     survey = SurveyUI.SurveyUI(top, self.lpointer, new_note)
+                    
+
                     survey.pack()
                     survey.grab_set()
+
+
+                    survey_result = survey_ui.retrieve_text()
+
                     self.root.wait_window(top)
 
-                    self.goal_list.goals[self.lpointer].update(new_prog, new_note)
+                    self.goal_list.goals[self.lpointer].update(new_prog, new_note, survey_result)
 
                     #print(self.goal_list.goals[self.lpointer])
                     self.text1.set("Working on %s\nProgress:\n%d/%d" %(self.goal_list.goals[self.lpointer].name, self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
                     self.set_note_listbox()
+                    self.set_survey_listbox()
                     self.goal_list.save() # updates save data
             else:
                 messagebox.showwarning("Warning", "Goal already completed")
@@ -197,13 +206,18 @@ class HomeUI:
                         new_note = simpledialog.askstring("Input", "Any thoughts on this progress?", parent=self.root)
                         top = Toplevel()
                         survey = SurveyUI.SurveyUI(top, self.lpointer, new_note)
+
                         survey.pack()
                         survey.grab_set()
+
+                        survey_result = survey_ui.retrieve_text()
+
                         self.root.wait_window(top)
-                        self.goal_list.goals[self.lpointer].update(new_prog, new_note)
+                        self.goal_list.goals[self.lpointer].update(new_prog, new_note, survey_result)
                         print(self.goal_list.goals[self.lpointer])
                         self.text1.set("Working on %s\nProgress:\n%d/%d" %(self.goal_list.goals[self.lpointer].name, self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
                         self.set_note_listbox()
+                        self.set_survey_listbox()
                         self.goal_list.save() # updates save data
                 else:
                     messagebox.showwarning("Warning", "Goal already completed")
@@ -217,8 +231,16 @@ class HomeUI:
         self.libox.delete(0,END) # clear current listbox
         for node in self.goal_list.goals[self.lpointer].rec:
             self.libox.insert(END, "{node.time}".format(node=node)) # refill list box with each node in selected goal
+    
             
-            
+    def set_survey_listbox(self):
+        '''
+        Updates note listbox display
+        '''
+        self.li_box.delete(0,END) # clear current listbox
+        for node in self.goal_list.goals[self.lpointer].rec:
+            self.libox.insert(END, "{node.time}".format(node=node)) # refill list box with each node in selected goal
+
     def view_note(self):
         '''
         Displays text for a selected note
@@ -226,18 +248,31 @@ class HomeUI:
         note_select = self.libox.curselection() # gets position of highlighted listbox entry
         if note_select:
             self.npointer = int(note_select[0]) # set pointer in node list to the same as highlighted listbox entry
-            print(self.goal_list.goals[self.lpointer].rec[self.npointer].survey)
+            print(self.goal_list.goals[self.lpointer].rec[self.npointer].note)
             messagebox.showinfo("note", self.goal_list.goals[self.lpointer].rec[self.npointer].note) # display note text
         else:
             messagebox.showwarning("Warning", "No note selected")
         
     def view_survey(self):
+        # survey_result = survey_ui.retrieve_text()
+        # print(survey_result)
         top = Toplevel()
-        survey_select = self.libox.curselection()
+        survey_select = self.li_box.curselection()
         if survey_select:
-            self.npointer = int(survey_select[0])
+            survey = DisplayUI.SurveyUI(top)
+            self.spointer = int(survey_select[0])
+            print(self.goal_list.goals[self.lpointer].rec[self.spointer].survey)
+            survey.pack()
+            survey.grab_set()
 
-            messagebox.showinfo("survey", self.goal_list.goals[self.lpointer].rec[self.npointer].survey) # display note text
+
+            survey_result = survey_ui.retrieve_text()
+
+            self.root.wait_window(top)
+
+        #     self.survey_pointer = int(survey_select[0])
+
+        #     messagebox.showinfo("survey", self.goal_list.goals[self.lpointer].rec[].survey) # display note text
         else:
             messagebox.showwarning("Warning", "No survey selected")
 
