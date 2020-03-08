@@ -20,11 +20,37 @@ class SurveyUI(Frame):
         self.survey_data = survey_data
        
         print(self.survey_data)
-        self.question1 = survey_data[0]
-        self.question2 = survey_data[1]
-        self.question3 = survey_data[2]
-        self.question4 = survey_data[3]
-        self.question5 = survey_data[4]
+
+        if(self.survey_data[0] == []):
+            self.question1 = survey_data[0]
+        else:
+            self.question1 = survey_data[0][0]
+
+        if(self.survey_data[1] == []):
+            self.question2 = survey_data[1]
+        else:
+            self.question2 = survey_data[1][0]
+
+        if(self.survey_data[2] == []):
+            self.question3 = survey_data[2]
+        else:
+            self.question3 = survey_data[2][0]
+
+        if(self.survey_data[3] == []):
+            self.question4 = survey_data[3]
+        else:
+            self.question4 = survey_data[3][0]
+
+        if(self.survey_data[4] == []):
+            self.question5 = survey_data[4]
+        else:
+            self.question5 = survey_data[4][0]
+
+        # self.question1 = survey_data[0][0]
+        # self.question2 = survey_data[1][0]
+        # self.question3 = survey_data[2][0]
+        # self.question4 = survey_data[3][0]
+        # self.question5 = survey_data[4][0]
 
         
 
