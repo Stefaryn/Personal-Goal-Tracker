@@ -119,10 +119,11 @@ def build_graph(goalObj):
     def on_pick(event):
         line = event.artist
         ind = event.ind
-        
+        text = ""
         print("debug on pick event",ind)
         print("DEBUG notes:",notes[ind[0]])
-        text = txt_format(notes[ind[0]])
+        if notes[ind[0]] != None:
+            text = txt_format(notes[ind[0]])
         
         print("DEBUG text:",text)
         txt.set_text(str(text))
