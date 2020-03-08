@@ -152,7 +152,9 @@ class SurveyUI(Frame):
 
 
             #survey = self.goal_list.goals[self.goal_n].update(0, self.note, self.inputArray)
+            master.destroy()
             return self.inputArray
+
 
 
         def save_survey():
@@ -167,6 +169,8 @@ class SurveyUI(Frame):
                     #You could add the questions too
                     filewriter.writerow([note])
             csvfile.close()
+
+
 
             # self.goal_list.save()
             #print(self.inputArray)
