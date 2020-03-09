@@ -8,8 +8,8 @@ import goal
 import os.path
 import SurveyUI
 import DisplayUI
-from SurveyUI import SurveyUI as survey_ui
 import csv
+# Because matplotlib is not standard library try importing graph and if it can not, ensure program can continue without that functionality.
 graphok = 0
 try:
     import graph
@@ -18,8 +18,24 @@ except ModuleNotFoundError:
 
 
 class HomeUI:
-
+    '''
+    Main User interface class.
+    Handles the bulk of user inputs.
+    methods:
+    __init__: initializes window
+    add_goal: creates a goal and adds to goal list
+    set_listbox: reloads contents of goal listbox whenever it changes
+    show_details: adjusts text in the UI as goals are selected as well as reload contents of note listbox
+    add_progess: adds a progress point to a given goal
+    set_note_listbox: reloads contents of note listbox whenever it changes
+    view_note: view saved note for a given progress point
+    view_survey: view saved survey for a given progress point
+    view_graph: view a graph of a given goal
+    '''
     def __init__(self):
+        '''
+        Creates application window on start up
+        '''
         
         # pointer to selected goal in list
         self.lpointer = 0
@@ -167,44 +183,42 @@ class HomeUI:
             self.set_note_listbox() # update display on note listbox to notes of the selected goal
         
     def add_progress(self):
-        selection = self.lbox.curselection()
-        note_select = self.libox.curselection()
-        if selection:
+        '''
+        Creates a new progress point in a goal.
+        Adds progress towards total completion, creates a note, and creates a survey.
+        '''
+        selection = self.lbox.curselection() # gets position of highlighted goal listbox entry
+        note_select = self.libox.curselection() # gets position of highlighted note listbox entry
+        if selection: # if a goal is selected
             self.lpointer = int(selection[0])
-            #self.npointer = int(note_select[0])
-            #print(self.lpointer)
-            #print(self.goal_list.goals[self.lpointer])
-            if (self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress) > 0:
-                new_prog = simpledialog.askinteger("Input", "How much progress have you made?", parent=self.root, minvalue=1, maxvalue=(self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress))
-                if new_prog:
+            if (self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress) > 0: # check if goal is already completed
+                # ask for amount of progress can be 0 to amount needed to complete goal
+                new_prog = simpledialog.askinteger("Input", "How much progress have you made?", parent=self.root, minvalue=0, maxvalue=(self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress))
+                if new_prog is not None: # if you did not close the dialog without input
+                    # get note input string
                     new_note = simpledialog.askstring("Input", "Any thoughts on this progress?", parent=self.root)
+                    
+                    # create pop up window
                     top = Toplevel()
                     survey = SurveyUI.SurveyUI(top, self.lpointer, new_note)
-                    
-
                     survey.pack()
+                    # disable interaction with main window while survey is active
                     survey.grab_set()
-
-
-                    #survey_result = SurveyUI.retrieve_text()
-
                     self.root.wait_window(top)
+                    
+                    self.goal_list.goals[self.lpointer].update(new_prog, new_note) # save inputs in goal class
 
-                    self.goal_list.goals[self.lpointer].update(new_prog, new_note)
-
-                    #print(self.goal_list.goals[self.lpointer])
                     self.text1.set("Working on %s\nProgress:\n%d/%d" %(self.goal_list.goals[self.lpointer].name, self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
-                    self.set_note_listbox()
-                    self.set_survey_listbox()
+                    self.set_note_listbox() # reloads note listbox display
                     self.goal_list.save() # updates save data
             else:
-                messagebox.showwarning("Warning", "Goal already completed")
+                messagebox.showwarning("Warning", "Goal already completed") # message if you try to add progress to completed goal
         else:
-            if note_select:
-                #self.npointer = int(note_select[0])
+            if note_select: # if a note is selected then it can be assumed a goal has already been selected and lpointer set
+                # see above comments this section of code is identical
                 if (self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress) > 0:
-                    new_prog = simpledialog.askinteger("Input", "How much progress have you made?", parent=self.root, minvalue=1, maxvalue=(self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress))
-                    if new_prog:
+                    new_prog = simpledialog.askinteger("Input", "How much progress have you made?", parent=self.root, minvalue=0, maxvalue=(self.goal_list.goals[self.lpointer].finish - self.goal_list.goals[self.lpointer].progress))
+                    if new_prog is not None:
                         new_note = simpledialog.askstring("Input", "Any thoughts on this progress?", parent=self.root)
                         top = Toplevel()
                         survey = SurveyUI.SurveyUI(top, self.lpointer, new_note)
@@ -212,14 +226,10 @@ class HomeUI:
                         survey.pack()
                         survey.grab_set()
 
-                        #survey_result = SurveyUI.retrieve_text()
-
                         self.root.wait_window(top)
                         self.goal_list.goals[self.lpointer].update(new_prog, new_note)
-                        print(self.goal_list.goals[self.lpointer])
                         self.text1.set("Working on %s\nProgress:\n%d/%d" %(self.goal_list.goals[self.lpointer].name, self.goal_list.goals[self.lpointer].progress, self.goal_list.goals[self.lpointer].finish))
                         self.set_note_listbox()
-                        self.set_survey_listbox()
                         self.goal_list.save() # updates save data
                 else:
                     messagebox.showwarning("Warning", "Goal already completed")
@@ -234,14 +244,6 @@ class HomeUI:
         for node in self.goal_list.goals[self.lpointer].rec:
             self.libox.insert(END, "{node.time}".format(node=node)) # refill list box with each node in selected goal
     
-            
-    def set_survey_listbox(self):
-        '''
-        Updates note listbox display
-        '''
-        self.libox.delete(0,END) # clear current listbox
-        for node in self.goal_list.goals[self.lpointer].rec:
-            self.libox.insert(END, "{node.time}".format(node=node)) # refill list box with each node in selected goal
 
     def view_note(self):
         '''
@@ -256,16 +258,17 @@ class HomeUI:
             messagebox.showwarning("Warning", "No note selected")
         
     def view_survey(self):
-        # survey_result = survey_ui.retrieve_text()
-        # print(survey_result)
-        survey_data = []
-        survey_select = self.libox.curselection()
-        if survey_select:
+        '''
+        View previous survey answers
+        '''
+        survey_data = [] # list to hold survey answers
+        survey_select = self.libox.curselection() # get selected progress point from note listbox
+        if survey_select: # if a progress point has been selected
             self.npointer = int(survey_select[0])
             goal_name = self.goal_list.goals[self.lpointer].name
             filename = goal_name.replace(" ","_")
             filename = "surveys/" + filename + "_survey"+ str(self.npointer)+ ".csv"
-            if os.path.exists(filename):
+            if os.path.exists(filename): # check if survey exists
                 with open(filename,"r") as csvfile:
                     csv_reader = csv.reader(csvfile, delimiter=",")
                     for row in csv_reader:
@@ -273,42 +276,38 @@ class HomeUI:
 
                 
                 csvfile.close()
+                # create pop up window
                 top = Toplevel()
                 survey = DisplayUI.SurveyUI(top, survey_data)
-
                 survey.pack()
+                # stop interaction with main window until pop up is closed
                 survey.grab_set()
-
                 self.root.wait_window(top)
 
             else:
                 print(survey_data)
                 messagebox.showwarning("Survey does not exist", "Survey does not exist")
-
-            #messagebox.showinfo("survey",survey_data)
-
-
-        #     self.survey_pointer = int(survey_select[0])
-
-        #     messagebox.showinfo("survey", self.goal_list.goals[self.lpointer].rec[].survey) # display note text
         else:
             messagebox.showwarning("Warning", "No survey selected")
 
 
         
     def view_graph(self):
-        if graphok == 0:	    
+        '''
+        Open window with graph of progress
+        '''        
+        if graphok == 0: # This means graph was imported correctly  
             selection = self.lbox.curselection()
             note_select = self.libox.curselection()
             if selection:
                 self.lpointer = int(selection[0])
                 graph.build_graph(self.goal_list.goals[self.lpointer])
             else:
-                if note_select:
-                    graph.build_graph(self.goal_list.goals[self.lpointer]) # if cursor is on a note then a goal must have already been selected and lpointer already set.
+                if note_select: # if cursor is on a note then a goal must have already been selected and lpointer already set.
+                    graph.build_graph(self.goal_list.goals[self.lpointer]) 
                 else:
                     messagebox.showwarning("Warning", "No goal selected")
-        else:
+        else: # if graph was not imported
             messagebox.showwarning("Warning", "Matplotlib is not installed please refer to the user installation document.")
         
             
