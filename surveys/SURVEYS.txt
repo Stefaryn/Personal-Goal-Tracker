@@ -1,0 +1,1 @@
+This folder will contain all the survey's csv files for the Personal-Goal-Tracker
