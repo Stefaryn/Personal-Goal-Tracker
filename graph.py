@@ -59,8 +59,8 @@ def build_graph(goalObj):
     fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(111)
 
-    # plots the first data of the goal, sets the graph to be lines and clickable points
-    line, = ax.plot(timestamps, milestones, '-o', picker=goalObj.finish, color='#fb8dd3')
+    # plots the data of the goal, sets the graph to be lines and clickable points
+    ax.plot(timestamps, milestones, '-o', picker=goalObj.finish, color='#fb8dd3')
 
     #set default y axis limit
     ax.set_ylim(-0.2, goalObj.finish)
@@ -68,7 +68,7 @@ def build_graph(goalObj):
     # Get the range of the dates
     # this handles the formatting of the x axis of the graph to be more presentable in different cases
     date_range = timestamps[-1] - timestamps[0]
-    print(date_range)
+    print("date range",date_range)
     days_padding = (5 - date_range.days)
     days_padding = max(1, days_padding)
 
@@ -117,7 +117,7 @@ def build_graph(goalObj):
 
 	#event action when a plot is clicked
     def on_pick(event):
-        line = event.artist
+        
         ind = event.ind
         text = ""
         print("debug on pick event",ind)
@@ -139,7 +139,7 @@ def build_graph(goalObj):
 
 
     #listens for actions
-    cid = fig.canvas.mpl_connect('pick_event', on_pick)
+    fig.canvas.mpl_connect('pick_event', on_pick)
     fig.canvas.mpl_connect('figure_leave_event', on_leave)
         
 
