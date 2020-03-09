@@ -2,6 +2,8 @@
 from tkinter import *
 from tkinter.font import Font
 import goal
+#Author: Maura McCabe
+
 import os
 
 
@@ -13,9 +15,7 @@ class SurveyUI(Frame):
         self.master = master
         Frame.__init__(self, master)
 
-        #self.goal_n = goal_n
-
-        #self.note = new_note
+        #Make question members to hold the answers to each question to be filled in below
 
         self.survey_data = survey_data
 
