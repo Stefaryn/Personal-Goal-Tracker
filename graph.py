@@ -33,13 +33,14 @@ def build_graph(goalObj):
     # checks if the object contains data
 
     if len(goalObj.rec) < 1:
-    	print("DEBUG: no progress found in this goal")
+    	print("GRAPH:no progress found in this goal")
     	return
 
     # iterates through the nodes in the object and add its data to the lists
 
     for node in goalObj.rec:
-        print("GRAPH DEBUG:",node.time)
+        #UNCOMMENT FOR DEBUG
+        #print("GRAPH DEBUG:",node.time)
         node_time = str(node.time)
         date_splitted = node_time.split('-')
         timestamps.append(datetime(int(date_splitted[0]),int(date_splitted[1]),int(date_splitted[2])))
@@ -49,10 +50,10 @@ def build_graph(goalObj):
 	
 
 
-
-    print("milestones:",milestones)
-    print("timestamps:",timestamps)
-    print("Finish",goalObj.finish)
+    #UNCOMMENT FOR DEBUG
+    # print("milestones:",milestones)
+    # print("timestamps:",timestamps)
+    # print("Finish",goalObj.finish)
 
     # sets the defualt display size of the graph
 
@@ -68,7 +69,8 @@ def build_graph(goalObj):
     # Get the range of the dates
     # this handles the formatting of the x axis of the graph to be more presentable in different cases
     date_range = timestamps[-1] - timestamps[0]
-    print("date range",date_range)
+    #UNCOMMENT FOR DEBUG
+    # print("date range",date_range)
     days_padding = (5 - date_range.days)
     days_padding = max(1, days_padding)
 
@@ -111,7 +113,8 @@ def build_graph(goalObj):
                 space_count = 0
                 char = '\n'
             formatted_txt += char
-        print("return text:",formatted_txt)
+        #UNCOMMENT FOR DEBUG
+        # print("return text:",formatted_txt)
         return formatted_txt
 	
 
@@ -120,12 +123,14 @@ def build_graph(goalObj):
         
         ind = event.ind
         text = ""
-        print("debug on pick event",ind)
-        print("DEBUG notes:",notes[ind[0]])
+        #UNCOMMENT FOR DEBUG
+        # print("debug on pick event",ind)
+        # print("DEBUG notes:",notes[ind[0]])
         if notes[ind[0]] != None:
             text = txt_format(notes[ind[0]])
         
-        print("DEBUG text:",text)
+        #UNCOMMENT FOR DEBUG
+        # print("DEBUG text:",text)
         txt.set_text(str(text))
         fig.canvas.draw()
         fig.canvas.flush_events()
