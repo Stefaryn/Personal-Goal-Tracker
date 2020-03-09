@@ -1,3 +1,4 @@
+#Author: Maura McCabe
 
 from tkinter import *
 from tkinter.font import Font
@@ -59,10 +60,6 @@ class SurveyUI(Frame):
         #Text Box for the first question
         self.textBox = Entry(self.frame, width= 50, textvariable = self.variable1, bg="pink")
         self.textBox.place(y=120)
-
-        #submit button for textbox
-        # self.buttonCommit = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
-        # self.buttonCommit.place(y=150, x=400)
         
 
         #Second question label and placement
@@ -76,9 +73,6 @@ class SurveyUI(Frame):
         self.textBox2 = Entry(self.frame, width= 50, textvariable = self.variable2, bg="pink")
         self.textBox2.place(y=200)
 
-        #Submit button for textbox2
-        # self.buttonCommit2 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
-        # self.buttonCommit2.place(y=230, x=400)
 
         #Third question label and placement
         self.fourth_label = Label(self.frame, text="What is hindering you in achieving this goal?", font=self.my_font_question, bg="pink")
@@ -91,9 +85,6 @@ class SurveyUI(Frame):
         self.textBox3 = Entry(self.frame, width= 50, textvariable = self.variable3, bg="pink")
         self.textBox3.place(y=280)
 
-        #Submit button for textbox3
-        # self.buttonCommit3 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
-        # self.buttonCommit3.place(y=310, x=400)
 
         #Fourth question label and placement
         self.fifth_label = Label(self.frame, text="Can you reformat your goal to make it more achievable?", font=self.my_font_question, bg="pink")
@@ -106,9 +97,6 @@ class SurveyUI(Frame):
         self.textBox4 = Entry(self.frame, width= 50, textvariable = self.variable4, bg="pink")
         self.textBox4.place(y=360)
 
-        #Submit button for textbox4
-        # self.buttonCommit4 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
-        # self.buttonCommit4.place(y=390, x=400)
 
         #Fifth question label and placement
         self.sixth_label = Label(self.frame, text="What will help you remember to continue to pursue this goal?", font=self.my_font_question, bg="pink")
@@ -125,12 +113,12 @@ class SurveyUI(Frame):
         self.buttonCommit5 = Button(self.frame, text="Submit", height = 1, command=lambda: retrieve_text(), bg="pink")
         self.buttonCommit5.place(y=470, x=400)
 
-        
-        #self.goal_list.goals[self.goal_n].update(0, self.note, self.inputArray)
-
-        #self.goal_list.goals[self.goal_n].update(0, self.note, self.inputArray)
 
         def retrieve_text():
+            '''
+            Create an array of answer inputs from the textbox values
+            '''
+
             self.inputArray = []
             
             inputValue = self.textBox.get()
@@ -147,17 +135,24 @@ class SurveyUI(Frame):
             self.inputArray.append(inputValue4)
             self.inputArray.append(inputValue5)
 
-            print("inputArray", self.inputArray)
+            #print("inputArray", self.inputArray)
+            #Call save_survey() to save the inputArray in a csv file
             save_survey()
 
-
-            #survey = self.goal_list.goals[self.goal_n].update(0, self.note, self.inputArray)
+            #Destroy the windwo (close out the window) when the submit button is clicked
             master.destroy()
+
+            #return the inputArray to be used in HomeUI
             return self.inputArray
 
 
 
         def save_survey():
+            '''
+            Function to save the inputArray in a csv file corresponding to the goal name
+            and progress number. This csv file will be accessed by homeUI.py when dipslaying
+            the survey results
+            '''
 
             filename = self.goal_name.replace(" ","_")
             filename = "surveys/" + filename + "_survey"+ str(self.goal_size)+ ".csv"
@@ -169,21 +164,6 @@ class SurveyUI(Frame):
                     #You could add the questions too
                     filewriter.writerow([note])
             csvfile.close()
-
-
-
-            # self.goal_list.save()
-            #print(self.inputArray)
-            #return self.inputArray
-    
-
-            #print(self.inputArray)
-
-            
-            #self.goal_list.goals[self.goal_n].set_survey(self.inputArray)
-            
-            
-            #print(self.goal_list.goals[self.goal_n].rec)
 
 
 
