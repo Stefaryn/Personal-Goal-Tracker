@@ -62,8 +62,8 @@ def build_graph(goalObj):
     # plots the data of the goal, sets the graph to be lines and clickable points
     ax.plot(timestamps, milestones, '-o', picker=goalObj.finish, color='#fb8dd3')
 
-    #set default y axis limit
-    ax.set_ylim(-0.2, goalObj.finish)
+    #set default y axis limit, adds 2% from each size so that all data are visible
+    ax.set_ylim(0-(0.02*goalObj.finish), goalObj.finish+(0.02*goalObj.finish))
 
     # Get the range of the dates
     # this handles the formatting of the x axis of the graph to be more presentable in different cases
